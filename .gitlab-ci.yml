@@ -23,8 +23,6 @@ git-sync:
         git@git.boo.tc:bootc/PowerDNS-Admin.git
   stage: Git Sync
   image: dkr.boo.tc/bootc/github-gitlab-sync:latest
-  tags:
-    - docker
   only:
     - triggers
 
