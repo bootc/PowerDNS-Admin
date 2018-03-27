@@ -1,40 +1,48 @@
-FROM debian:stretch
+FROM alpine:3.7
 
-LABEL summary="PowerDNS-Admin Web GUI" \
-      io.k8s.description="A web interface for managing DNS records through PowerDNS." \
-      io.k8s.display-name="PowerDNS-Admin" \
-      license="MIT" \
-      architecture="x86_64" \
-      maintainer="Chris Boot <bootc@boo.tc>"
+LABEL org.label-schema.vendor="Chris Boot" \
+      org.label-schema.url="https://github.com/bootc/PowerDNS-Admin" \
+      org.label-schema.name="PowerDNS-Admin" \
+      org.label-schema.description="A web interface for managing DNS records through PowerDNS" \
+      org.label-schema.license="MIT" \
+      org.label-schema.vcs-url="https://github.com/bootc/PowerDNS-Admin" \
+      org.label-schema.schema-version="1.0"
 
-RUN apt-get update && \
-    apt-get dist-upgrade -y && \
-    apt-get install -y \
-    libldap2-dev \
-    libsasl2-dev \
-    python-dev \
-    python-mysqldb \
-    python-pip \
-    python-psycopg2 \
-    uwsgi \
-    uwsgi-plugin-python \
-    && rm -rf /var/lib/apt/lists/* && \
-    mkdir /code
+RUN apk add --no-cache --update \
+        curl \
+        python \
+        py-mysqldb \
+        py2-asn1 \
+        py2-asn1-modules \
+        py2-bcrypt \
+        py2-cffi \
+        py2-configobj \
+        py2-decorator \
+        py2-dnspython \
+        py2-flask \
+        py2-flask-oauthlib \
+        py2-flask-wtf \
+        py2-gunicorn \
+        py2-pbr \
+        py2-pip \
+        py2-psycopg2 \
+        py2-pyldap \
+        py2-pysqlite \
+        py2-requests \
+        py2-six \
+        py2-sqlalchemy \
+        py2-sqlparse \
+        py2-tempita \
+    && rm -rf /var/cache/apk/*
 
 WORKDIR /code
-ADD requirements.txt /code/
-RUN pip install -r requirements.txt
 ADD . /code/
+RUN pip install -r requirements.txt --upgrade-strategy only-if-needed
 
-COPY config_template.py /code/config.py
+COPY config_docker.py /code/config.py
 
 EXPOSE 8080
-CMD /usr/bin/uwsgi \
-    --plugin python \
-    --chdir /code \
-    --master \
-    --processes 2 \
-    --threads 2 \
-    --die-on-term \
-    --http-socket :8080 \
-    --wsgi-file /code/run.wsgi
+CMD /usr/bin/gunicorn \
+    -b 0.0.0.0:8080 \
+    --access-logfile - \
+    app:app
