@@ -6,7 +6,7 @@ stages:
 build:
   stage: build
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u="${QUAY_IO_USER}" -p="${QUAY_IO_PASSWORD}" quay.io
     - >-
       docker build
       --force-rm=true
@@ -14,9 +14,9 @@ build:
       --label=org.label-schema.vcs-ref="${CI_COMMIT_SHA}"
       --label=org.label-schema.vcs-url="${CI_PROJECT_URL}.git"
       --pull=true
-      -t ${CI_REGISTRY_IMAGE}:latest
+      -t quay.io/${CI_PROJECT_PATH}:latest
       .
-    - docker push ${CI_REGISTRY_IMAGE}:latest
+    - docker push quay.io/${CI_PROJECT_PATH}:latest
   only:
     - master
   except:
