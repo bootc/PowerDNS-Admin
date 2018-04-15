@@ -5,7 +5,6 @@ LABEL org.label-schema.vendor="Chris Boot" \
       org.label-schema.name="PowerDNS-Admin" \
       org.label-schema.description="A web interface for managing DNS records through PowerDNS" \
       org.label-schema.license="MIT" \
-      org.label-schema.vcs-url="https://github.com/bootc/PowerDNS-Admin" \
       org.label-schema.schema-version="1.0"
 
 RUN apk add --no-cache --update \
