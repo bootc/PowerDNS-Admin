@@ -16,8 +16,10 @@ build:
       --label=org.label-schema.vcs-url="${CI_PROJECT_URL}.git"
       --pull=true
       -t quay.io/${DKR_IMAGE}:latest
+      -t quay.io/${DKR_IMAGE}:${CI_COMMIT_REF_NAME}
       .
     - docker push quay.io/${DKR_IMAGE}:latest
+    - docker push quay.io/${DKR_IMAGE}:${CI_COMMIT_REF_NAME}
   only:
     - master
   except:
@@ -33,7 +35,7 @@ git-sync:
         git@github.com:${CI_PROJECT_PATH}.git
         git@git.boo.tc:${CI_PROJECT_PATH}.git
   stage: git-sync
-  image: dkr.boo.tc/bootc/github-gitlab-sync:latest
+  image: quay.io/bootc/github-gitlab-sync:latest
   only:
     - triggers
 
