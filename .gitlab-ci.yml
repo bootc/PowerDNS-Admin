@@ -27,7 +27,7 @@ build:
 git-sync:
   script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add
     - git sync-remote
         git@github.com:${CI_PROJECT_PATH}.git
         git@git.boo.tc:${CI_PROJECT_PATH}.git
