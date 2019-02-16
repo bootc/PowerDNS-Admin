@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.9
 
 ARG BUILD_DATE=1970-01-01T00:00:00Z
 ARG VCS_REF=
@@ -25,6 +25,7 @@ RUN apk add --no-cache --update \
         py2-decorator \
         py2-dnspython \
         py2-flask \
+        py2-flask-login \
         py2-flask-oauthlib \
         py2-flask-wtf \
         py2-gunicorn \
