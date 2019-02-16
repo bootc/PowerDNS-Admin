@@ -1,11 +1,17 @@
 FROM alpine:3.7
 
+ARG BUILD_DATE=1970-01-01T00:00:00Z
+ARG VCS_REF=
+
 LABEL org.label-schema.vendor="Chris Boot" \
-      org.label-schema.url="https://github.com/bootc/PowerDNS-Admin" \
+      org.label-schema.url="https://git.boo.tc/bootc/PowerDNS-Admin" \
       org.label-schema.name="PowerDNS-Admin" \
       org.label-schema.description="A web interface for managing DNS records through PowerDNS" \
       org.label-schema.license="MIT" \
-      org.label-schema.schema-version="1.0"
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.build-date="${BUILD_DATE}" \
+      org.label-schema.vcs-ref="${VCS_REF}" \
+      org.label-schema.vcs-url="https://git.boo.tc/bootc/PowerDNS-Admin.git"
 
 RUN apk add --no-cache --update \
         curl \
